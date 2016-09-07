@@ -120,7 +120,7 @@ function startWebSocket() {
 
         ws.close();
         
-    }
+    };
 
 
     ws.onmessage = function(evt) {
@@ -193,11 +193,14 @@ function startWebSocket() {
 
             console.log("收到_myID");
             myID = json.data;
+            
         }else if(json.event === "bye"){
             console.log(json.myID + " 给大家说再见了");
             removeElementbyID(json.myID);
         }else if(json.event === "talk"){
             console.log(json.myID+"说:"+json.data);
+            var speaktextSinnerHTML = document.getElementById("speaktext").innerHTML;
+            document.getElementById("speaktext").innerHTML = speaktextSinnerHTML + "<span class='say'>"+json.myID+"说:"+json.data+"</span>";
         }else{
             console.log("未知参数不错响应:"+evt.data);
         }
@@ -235,6 +238,8 @@ function initialize() {
 function sendMsg(){
 
     var talk = document.getElementById("writeMsg").value;
+    var speaktextSinnerHTML = document.getElementById("speaktext").innerHTML;
+    document.getElementById("speaktext").innerHTML = speaktextSinnerHTML + "<span class='say'>我说:"+talk+"</span>";
     console.log("我打算说"+talk);
     ws.send(JSON.stringify({
         "myID":myID,

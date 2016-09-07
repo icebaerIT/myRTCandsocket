@@ -112,14 +112,17 @@ public class MyServerEndpoint  {
         	String roomNum= sessionInRoom.get(this.session.getId());//找到用户所在房间号
         	Map<String, Session> theRoom = sessionMapList.get(roomNum);//找到房间
         	for (String Userkey : theRoom.keySet()) {
-        		try {
-        			
-					theRoom.get(Userkey).getBasicRemote().sendText(message);
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+        		if(!Userkey.equals(this.session.getId())){
+        			try {
+            			
+    					theRoom.get(Userkey).getBasicRemote().sendText(message);
+    					
+    				} catch (IOException e) {
+    					// TODO Auto-generated catch block
+    					e.printStackTrace();
+    				}
+    			}
+        		
 
             }
         	
