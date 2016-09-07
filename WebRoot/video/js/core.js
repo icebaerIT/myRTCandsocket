@@ -22,6 +22,9 @@ var myID = "";
 window.onload = initialize();
 
 
+
+
+
 function createPeerConnections(isCall,sessionID){
     console.log("创建createPeerConnections");
     var Server = {"iceServers" : [{"url" : "stun:stun.l.google.com:19302"}]};
@@ -113,7 +116,11 @@ function startWebSocket() {
 
     };
 
+    window.onbeforeunload = function () {
 
+        ws.close();
+        
+    }
 
 
     ws.onmessage = function(evt) {
