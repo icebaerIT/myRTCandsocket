@@ -163,34 +163,41 @@ public class MyServerEndpoint  {
     }  
       
     
-    @OnError 
+/*    @OnError 
     public void onError(Throwable error) {
     	
     	sysLogger.info("socket出错了");
     	error.printStackTrace();
     	
     }
-    
+    */
     
     @OnClose  
-    public void end(@PathParam(value = "user")String user,CloseReason reason) {
+    public void end(@PathParam(value = "user")String user) {
     	
-    	Map<String, Object> reRoom = new HashMap<String, Object>();
-    	reRoom.put("event", "bye");
-    	reRoom.put("myID", this.session.getId());
+    	Map<String, Object> reRoom = new HashMap<String, Object>();//创建返回仓库
+    	
+    	
+    	reRoom.put("event", "bye");//模式为再见
+    	
+    	reRoom.put("myID", this.session.getId());//再见的人的ID放进去
+    	
     	String roomNum= sessionInRoom.get(this.session.getId());//找到用户所在房间号
-    	sessionInRoom.remove(this.session.getId());//删除相应位置节省空间
+    	
+    	
+    	sessionInRoom.remove(this.session.getId());//删除房间记录
+    	
     	Map<String, Session> theRoom = sessionMapList.get(roomNum);//找到房间
-    	theRoom.remove(this.session.getId());//删除用户
-    	for (String Userkey : theRoom.keySet()) {//遍历房间把自己退出的消息告诉其他人
-    		if(!Userkey.equals(this.session.getId())){
+    	
+    	theRoom.remove(this.session.getId());//令用户离开房间
+    	
+    	for (String Userkey : theRoom.keySet()){//遍历房间把自己退出的消息告诉其他人
     			try {
 					theRoom.get(Userkey).getBasicRemote().sendText(JSONObject.fromObject(reRoom).toString());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
     	}
     	
 /*    	sessionMap.remove(this.session.getId());*/
