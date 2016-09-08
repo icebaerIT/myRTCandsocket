@@ -208,7 +208,6 @@ function startWebSocket() {
         }else if(json.event === "talk"){
             console.log(json.myID+"说:"+json.data);
             var speaktextSinnerHTML = document.getElementById("speaktext").innerHTML;
-            document.getElementById("speaktext").innerHTML = speaktextSinnerHTML + "<p class='say otherSay'>"+json.data+":"+json.myID+"</p>";
         }else{
             console.log("未知参数不错响应:"+evt.data);
         }

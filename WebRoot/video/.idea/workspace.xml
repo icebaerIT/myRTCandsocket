@@ -39,7 +39,7 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="talk.css" pinned="false" current-in-tab="true">
+          <file leaf-file-name="talk.css" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/css/talk.css">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="439">
@@ -59,11 +59,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="core.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="core.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/core.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="421">
-                  <caret line="210" column="106" selection-start-line="210" selection-start-column="98" selection-end-line="210" selection-end-column="106" />
+                <state relative-caret-position="307">
+                  <caret line="210" column="84" selection-start-line="210" selection-start-column="84" selection-end-line="210" selection-end-column="84" />
                   <folding>
                     <element signature="e#0#42#0" expanded="false" />
                   </folding>
@@ -100,8 +100,8 @@
         <option value="$PROJECT_DIR$/js/tool.js" />
         <option value="$PROJECT_DIR$/js/init.js" />
         <option value="$PROJECT_DIR$/video.html" />
-        <option value="$PROJECT_DIR$/js/core.js" />
         <option value="$PROJECT_DIR$/css/talk.css" />
+        <option value="$PROJECT_DIR$/js/core.js" />
       </list>
     </option>
   </component>
@@ -260,12 +260,12 @@
       <option name="presentableId" value="Default" />
       <updated>1473218251151</updated>
       <workItem from="1473218252555" duration="11115000" />
-      <workItem from="1473297728676" duration="4814000" />
+      <workItem from="1473297728676" duration="5303000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15929000" />
+    <option name="totallyTimeSpent" value="16418000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -394,21 +394,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/core.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="210" column="106" selection-start-line="210" selection-start-column="98" selection-end-line="210" selection-end-column="106" />
-          <folding>
-            <element signature="e#0#42#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/talk.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="439">
           <caret line="92" column="21" selection-start-line="92" selection-start-column="21" selection-end-line="92" selection-end-column="21" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/core.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="210" column="84" selection-start-line="210" selection-start-column="84" selection-end-line="210" selection-end-column="84" />
+          <folding>
+            <element signature="e#0#42#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
