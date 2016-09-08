@@ -7,6 +7,7 @@
 #myinfo, #allvideo {
     display: inline-block;
     background-color: burlywood;
+    position: relative;
 
 }
 
@@ -45,6 +46,9 @@
     border-radius: 3px;
     background-color: aliceblue;
     width: 100%;
+    overflow-y: scroll;
+    -ms-word-break: break-all;
+    word-break: break-all;
 
 }
 
@@ -67,4 +71,24 @@
 .videoSize{
     height: 45%;
     width: 23%;
+}
+
+.say{
+
+}
+
+#test,.allname{
+    color:#fff;
+    z-index: 3;
+    position: absolute;
+}
+.otherVideo{
+    position: relative;
+}
+/*.iSay{
+    !*transform: scalex(-1);*!
+    -webkit-writing-mode: rl;
+}*/
+.otherSay{
+    text-align: right;
 }

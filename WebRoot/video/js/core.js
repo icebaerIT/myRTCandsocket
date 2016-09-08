@@ -21,6 +21,13 @@ var myID = "";
 
 window.onload = initialize();
 
+function isNull( str ){
+    if ( str == "" ) return true;
+    var regu = "^[ ]+$";
+    var re = new RegExp(regu);
+    return re.test(str);
+}
+
 
 
 
@@ -46,7 +53,7 @@ function createPeerConnections(isCall,sessionID){
     //如果检测到媒体流连接到本地，将其绑定到一个video标签上输出
     pc.onaddstream = function(event){
 
-        var theVideo = "<video class='videoSize' id="+sessionID+" src="+URL.createObjectURL(event.stream)+" autoplay></video>";
+        var theVideo = "<div id="+sessionID+" class='otherVideo'><p class='allname'>我是:"+sessionID+"</p><video class='videoSize'  src="+URL.createObjectURL(event.stream)+" autoplay></video></div>";
         document.getElementById("allvideo").innerHTML = document.getElementById("allvideo").innerHTML + theVideo;
 
     };
@@ -192,6 +199,7 @@ function startWebSocket() {
         }else if(json.event ==="myID"){
 
             console.log("收到_myID");
+            document.getElementById("test").innerHTML = "我是:"+json.data;
             myID = json.data;
             
         }else if(json.event === "bye"){
@@ -200,7 +208,7 @@ function startWebSocket() {
         }else if(json.event === "talk"){
             console.log(json.myID+"说:"+json.data);
             var speaktextSinnerHTML = document.getElementById("speaktext").innerHTML;
-            document.getElementById("speaktext").innerHTML = speaktextSinnerHTML + "<span class='say'>"+json.myID+"说:"+json.data+"</span>";
+            document.getElementById("speaktext").innerHTML = speaktextSinnerHTML + "<p class='say otherSay'>"+json.data+":"+json.myID+"</p>";
         }else{
             console.log("未知参数不错响应:"+evt.data);
         }
@@ -239,12 +247,16 @@ function sendMsg(){
 
     var talk = document.getElementById("writeMsg").value;
     var speaktextSinnerHTML = document.getElementById("speaktext").innerHTML;
-    document.getElementById("speaktext").innerHTML = speaktextSinnerHTML + "<span class='say'>我说:"+talk+"</span>";
+    document.getElementById("speaktext").innerHTML = speaktextSinnerHTML + "<p class='say iSay'>我说:"+talk+"</p>";
     console.log("我打算说"+talk);
-    ws.send(JSON.stringify({
-        "myID":myID,
-        "event": "talk",
-        "data":talk,
-    }));
+    if(talk != null && !isNull(talk)){
+        ws.send(JSON.stringify({
+            "myID":myID,
+            "event": "talk",
+            "data":talk,
+        }));
+    }
+
+    document.getElementById("writeMsg").value = "";
 
 }

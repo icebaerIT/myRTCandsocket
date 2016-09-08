@@ -39,17 +39,16 @@ public class MyServerEndpoint  {
         this.session = session;
 /*        sessionMap.put(session.getId(),session);*/
         Map<String,Object> MyID = new HashMap<String, Object>();
-
-        		try {
-        			MyID.put("event", "myID");
-        			MyID.put("data", this.session.getId());
-        			this.session.getBasicRemote().sendText(JSONObject.fromObject(MyID).toString());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-     
+        if(this.session.isOpen()){
+    		try {
+    			MyID.put("event", "myID");
+    			MyID.put("data", this.session.getId());
+    			this.session.getBasicRemote().sendText(JSONObject.fromObject(MyID).toString());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+        }     
         sysLogger.info("*** WebSocket opened from sessionID " + session.getId() +"\n");
         
 
@@ -92,13 +91,16 @@ public class MyServerEndpoint  {
             		reRoom.put("Usernum",theRoomNum);
             		reRoom.put("event","needOffer");
             		/*返回数据*/
-            		try {
-						this.session.getBasicRemote().sendText(JSONObject.fromObject(reRoom).toString());
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-            		
+            		if(this.session.isOpen()){
+                		try {
+    						this.session.getBasicRemote().sendText(JSONObject.fromObject(reRoom).toString());
+    					} catch (IOException e) {
+    						// TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}
+            			
+            		}
+		
             		break;
             	}
             }
@@ -113,14 +115,17 @@ public class MyServerEndpoint  {
         	Map<String, Session> theRoom = sessionMapList.get(roomNum);//找到房间
         	for (String Userkey : theRoom.keySet()) {
         		if(!Userkey.equals(this.session.getId())){
-        			try {
-            			
-    					theRoom.get(Userkey).getBasicRemote().sendText(message);
-    					
-    				} catch (IOException e) {
-    					// TODO Auto-generated catch block
-    					e.printStackTrace();
-    				}
+        			if(theRoom.get(Userkey).isOpen()){//判断socket是否还连接
+            			try {
+                			
+        					theRoom.get(Userkey).getBasicRemote().sendText(message);
+        					
+        				} catch (IOException e) {
+        					// TODO Auto-generated catch block
+        					e.printStackTrace();
+        				}	
+        			}
+
     			}
         		
 
@@ -132,13 +137,15 @@ public class MyServerEndpoint  {
         	String myRoom = sessionInRoom.get(this.session.getId());//获取自己的房间
         	Map<String, Session> theRoom = sessionMapList.get(myRoom);//通过房间号获取房间
         	Session session = theRoom.get(theJson.getString("targetID"));//通过目标ID获取目标的session
-        	try {//发送数据
-				session.getBasicRemote().sendText(message);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(session.isOpen()){//判断socket是否还连接
+	        	try {//发送数据
+					session.getBasicRemote().sendText(message);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-        	
+
         	
         };
         
@@ -166,14 +173,14 @@ public class MyServerEndpoint  {
     }  
       
     
-/*    @OnError 
+    @OnError 
     public void onError(Throwable error) {
     	
     	sysLogger.info("socket出错了");
     	error.printStackTrace();
     	
     }
-    */
+    
     
     @OnClose  
     public void end(@PathParam(value = "user")String user) {
@@ -195,12 +202,16 @@ public class MyServerEndpoint  {
     	theRoom.remove(this.session.getId());//令用户离开房间
     	
     	for (String Userkey : theRoom.keySet()){//遍历房间把自己退出的消息告诉其他人
+    		
+    		if(theRoom.get(Userkey).isOpen()){//判断socket是否还连接
     			try {
 					theRoom.get(Userkey).getBasicRemote().sendText(JSONObject.fromObject(reRoom).toString());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+    		}
+
     	}
     	
 /*    	sessionMap.remove(this.session.getId());*/
