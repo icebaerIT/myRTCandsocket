@@ -199,7 +199,10 @@ function startWebSocket() {
         }else if(json.event ==="myID"){
 
             console.log("收到_myID");
+            
             document.getElementById("test").innerHTML = "我是:"+json.data;
+            
+            
             myID = json.data;
             
         }else if(json.event === "bye"){

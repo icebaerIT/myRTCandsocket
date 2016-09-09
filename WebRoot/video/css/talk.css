@@ -21,7 +21,8 @@
     height: 100%;
     width: 78%;
     vertical-align: bottom;
-    background-color: antiquewhite;
+    background-color: blue;
+    transform: scalex(-1);
 }
 
 #writeMsg {
@@ -84,6 +85,7 @@
 }
 .otherVideo{
     position: relative;
+    right:0px;
 }
 /*.iSay{
     !*transform: scalex(-1);*!

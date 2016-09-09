@@ -149,27 +149,6 @@ public class MyServerEndpoint  {
         	
         };
         
-        
-        
-        
-        /*遍历*/
-/*        for (String key : sessionMap.keySet()) {
-        	if(!key.equals(this.session.getId())){
-        		try {
-        			sessionMap.get(key).getBasicRemote().sendText(message);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-        	}
-        }*/
-/*        try {
-			session.getBasicRemote().sendText(message+"  你好");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			sysLogger.info("WebSocket 响应消息出错");
-			e.printStackTrace();
-		}*/
     }  
       
     
