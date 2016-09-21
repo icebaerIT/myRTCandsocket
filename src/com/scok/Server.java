@@ -17,7 +17,7 @@ public class Server
     {  
         try   
         {  
-            ss = new ServerSocket(10000);  
+            ss = new ServerSocket(20000);  
               
             System.out.println("服务器等待输入中");  
               

@@ -2,27 +2,20 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.scok.Server;
 import com.scok.ServerSocketListenerThread;
 
-public class Initialization extends HttpServlet {
-	 /**
-	 * 
-	 */
-	private static final long serialVersionUID = -3971632860143467252L;
-	private static final Logger sysLogger = Logger.getLogger("sysLog"); 
+public class sendMyGPRS extends HttpServlet {
 
 	/**
 	 * Constructor of the object.
 	 */
-	public Initialization() {
+	public sendMyGPRS() {
 		super();
 	}
 
@@ -46,7 +39,7 @@ public class Initialization extends HttpServlet {
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
 		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
@@ -58,7 +51,6 @@ public class Initialization extends HttpServlet {
 		out.println(", using the GET method");
 		out.println("  </BODY>");
 		out.println("</HTML>");
-		sysLogger.info("初始化get");
 		out.flush();
 		out.close();
 	}
@@ -78,16 +70,38 @@ public class Initialization extends HttpServlet {
 
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		out.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-		out.println("<HTML>");
-		out.println("  <HEAD><TITLE>A Servlet</TITLE></HEAD>");
-		out.println("  <BODY>");
-		out.print("    This is ");
-		out.print(this.getClass());
-		out.println(", using the POST method");
-		out.println("  </BODY>");
-		out.println("</HTML>");
-		sysLogger.info("初始化post");
+		
+		String portName = request.getParameter("mySend");//获取特定的值
+		char[] portNameList = portName.toCharArray();//将字符串转化为字符数组
+		byte[] portNameListNum = new byte[portNameList.length];
+		for(int i = 0; i < portNameList.length; i++){//将字符转化为ascii码
+			portNameListNum[i] = (byte)portNameList[i];
+			try {
+				Thread.sleep(120);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	try{
+        		//socket.sendUrgentData(0xFF);
+        		ServerSocketListenerThread.netOutputStream.write(portNameListNum[i]);
+        		}catch(Exception ex){
+        			System.out.println("对方已经断开发送失败跳出发送循环");
+        			break;
+        	}
+        	if(i == portNameList.length - 1){
+             	try{
+            		//socket.sendUrgentData(0xFF);
+            		ServerSocketListenerThread.netOutputStream.write(0x0A);//发送结束符
+            		}catch(Exception ex){
+            			System.out.println("对方已经断开发送失败");
+            	}
+        	}
+		}
+
+		
+		
+		out.write("1");
 		out.flush();
 		out.close();
 	}
@@ -99,17 +113,6 @@ public class Initialization extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		// Put your code here
-		sysLogger.info("初始化?");
-		Thread t = new Thread(new Runnable(){
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				ServerSocketListenerThread.ListenerSocket();
-			}  
-			});  
-        t.start();  
-		
-		//Server initServer = new Server();
 	}
 
 }
