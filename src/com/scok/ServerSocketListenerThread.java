@@ -19,6 +19,21 @@ public class ServerSocketListenerThread{/* extends Thread */
     static String theString="";
     static String theASCII = "";
     static int tooMoreZero = 0;
+    static int overtime = 0;
+    static int connectOpen = 0;
+    
+    
+    public static void shutdownAll(Socket socket){
+    	try {
+			socket.close();
+			netInputStream.close();
+			netOutputStream.close();
+			System.out.println("所有连接断开");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
     
     
     public static void sayHelloClient(String Hello) {//向客户端发送信息
@@ -38,7 +53,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 			
  
     public final static int heartJump(Socket socket){//心调程序
-    	System.out.println("我的心跳了一下");
+    	System.out.println(overtime + ":我的心跳了一下");
        	try{
     		socket.sendUrgentData(0xFF);//判断连接是否正常
     		sayHelloClient("Heart Jump!!!");
@@ -57,8 +72,9 @@ public class ServerSocketListenerThread{/* extends Thread */
 				while(true){
 					try {
 						Thread.sleep(10000);
-	    				if(heartJump(socket) == 0){
-	    					System.out.println("发现客户端断开心跳跳出");
+						overtime += 1;
+	    				if(heartJump(socket) == 0 || overtime >= 4){
+	    					System.out.println("发现客户端断开或者客户端未发送信息超时");
 	    					break;
 	    				};
 					} catch (InterruptedException e) {
@@ -66,14 +82,14 @@ public class ServerSocketListenerThread{/* extends Thread */
 						e.printStackTrace();
 					}
 				}
-				try {
-					System.out.println("心跳尝试关闭socket");
-					socket.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					System.out.println("心跳中关闭socket失败可能已经被关闭");
-				}
 
+					System.out.println("心跳尝试关闭socket");
+		            if(connectOpen == 1){
+			            shutdownAll(socket);//关闭所有连接
+		            }
+		            connectOpen = 0;
+		            System.out.println("心跳关闭操作完成");
+		            
 			}  
 			});  
     }
@@ -94,6 +110,8 @@ public class ServerSocketListenerThread{/* extends Thread */
 	            
 	            netOutputStream=new DataOutputStream(socket.getOutputStream());
 	            
+	            connectOpen = 1;
+	            
 	            System.out.println("对客户端说你好");
 	            
 	            sayHelloClient("Hello Client!");
@@ -111,6 +129,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 	               	try{
 	            		socket.sendUrgentData(0xFF);//判断连接是否正常
 	            		netInputStream.read(readLen);
+	            		overtime = 0;
 	            		}catch(Exception ex){
 	            			System.out.println("对方已经断开停止读取数据");
 	            			break;
@@ -156,9 +175,9 @@ public class ServerSocketListenerThread{/* extends Thread */
 
 					
 	            }
-	            netInputStream.close();  
-	            netOutputStream.close();  
-                socket.close();	
+	            if(connectOpen == 1){
+		            shutdownAll(socket);//关闭所有连接
+	            }
                 System.out.println("服务器主动断开");
 			}
 		} catch (IOException e) {
