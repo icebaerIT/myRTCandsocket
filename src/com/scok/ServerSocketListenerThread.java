@@ -98,6 +98,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 	    		Thread t = createHeartJumpThread(socket);//创建一个心跳
 	    		
 	    		 t.start();
+
 	            
 	            while(true){//读取发送循环
 	            	
