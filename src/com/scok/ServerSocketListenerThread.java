@@ -38,11 +38,41 @@ public class ServerSocketListenerThread{/* extends Thread */
     	System.out.println("我的心跳了一下");
        	try{
     		socket.sendUrgentData(0xFF);//判断连接是否正常
-    		netInputStream.read(readLen);
+    		sayHelloClient("Heart Jump!!!");
     		}catch(Exception ex){
     			return 0;
     	}
        	return 1;
+    }
+    
+    
+    public static Thread createHeartJumpThread(final Socket socket){
+    	return new Thread(new Runnable(){//创建一个线程
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				while(true){
+					try {
+						Thread.sleep(10000);
+	    				if(heartJump(socket) == 0){
+	    					System.out.println("发现客户端断开心跳跳出");
+	    					break;
+	    				};
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				try {
+					System.out.println("心跳尝试关闭socket");
+					socket.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("心跳中关闭socket失败可能已经被关闭");
+				}
+
+			}  
+			});  
     }
     
     
@@ -58,32 +88,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 	            netOutputStream=new DataOutputStream(socket.getOutputStream());
 	            System.out.println("对客户端说你好");
 	            sayHelloClient("Hello Client!");
-	    		Thread t = new Thread(new Runnable(){//创建一个线程
-	    			@Override
-	    			public void run() {
-	    				// TODO Auto-generated method stub
-	    				while(true){
-	    					try {
-								Thread.sleep(1000);
-			    				if(heartJump(socket) == 0){
-			    					System.out.println("发现客户端断开心跳跳出");
-			    					break;
-			    				};
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-	    				}
-	    				try {
-	    					System.out.println("心跳尝试关闭socket");
-							socket.close();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							System.out.println("心跳中关闭socket失败可能已经被关闭");
-						}
-
-	    			}  
-	    			});  
+	    		Thread t = createHeartJumpThread(socket);//创建一个心跳
 	            
 	            while(true){//读取发送循环
 	            	
