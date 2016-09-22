@@ -17,6 +17,9 @@ public class ServerSocketListenerThread{/* extends Thread */
     static byte[] readLen=new byte[100];
     static byte[] writeLen=new byte[100];
     static String theString="";
+    static String theASCII = "";
+    static int tooMoreZero = 0;
+    
     
     public static void sayHelloClient(String Hello) {//向客户端发送信息
         System.out.println("向客户端发送信息");
@@ -106,7 +109,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 
 	                System.out.println("读取数据");
 	               	try{
-	            		//socket.sendUrgentData(0xFF);//判断连接是否正常
+	            		socket.sendUrgentData(0xFF);//判断连接是否正常
 	            		netInputStream.read(readLen);
 	            		}catch(Exception ex){
 	            			System.out.println("对方已经断开停止读取数据");
@@ -114,22 +117,38 @@ public class ServerSocketListenerThread{/* extends Thread */
 	            	}
 	                System.out.println("读取完毕");
 	                theString="";
-	               
-	                for(int i = 0; i < 100;i++){
+	                theASCII = "";
+	                
+	                for(int i = 0; i < 100;i++){//组合收到的数据
 	                	if(readLen[i] == 0){
+	                		tooMoreZero += 1; 
 	                		break;
+	                		
 	                	}
+	                	
+	                	tooMoreZero = 0;//只要一次不是0就初始化;
 	                	theString = theString+(char)readLen[i];
+	                	theASCII = theASCII +","+ readLen[i];
 	                	//System.out.println((char)readLen[i]);
 	                }
-	                for(int i=0 ;i < readLen.length; i++){
+	                
+	                
+
+	                
+	                for(int i=0 ;i < readLen.length; i++){//readLen初始化
 	                	if(readLen[i] == 0){
 	                	 break;	
 	                	}
 	                	readLen[i] = 0;
 	                }
+	                
+	                
+	                
 	                System.out.println(theString);
-	                if(theString.equalsIgnoreCase("exit")){//获取到信息后如果是exit就断开连接
+	                
+	                
+	                if(theString.equalsIgnoreCase("exit")||tooMoreZero >= 10){//获取到信息后如果是exit就断开连接,或者空循环太多次也跳出
+	                	tooMoreZero = 0;
 	                	System.out.println("服务接收到exit");
 	                	sayHelloClient("byebye");
 	                	break;
