@@ -18,8 +18,8 @@ public class ServerSocketListenerThread{/* extends Thread */
     static byte[] writeLen=new byte[100];
     static String theString="";
     
-    public static void sayHelloClient(String Hello) {
-        System.out.println("对客户端说你好");
+    public static void sayHelloClient(String Hello) {//向客户端发送信息
+        System.out.println("向客户端发送信息");
     	char[] theChar = Hello.toCharArray();
     	byte[] portNameListNum = new byte[theChar.length];
     	for(int i=0;i<theChar.length;i++){
@@ -33,19 +33,61 @@ public class ServerSocketListenerThread{/* extends Thread */
     	}
 	}
 			
-
+ 
+    public final static int heartJump(Socket socket){//心调程序
+    	System.out.println("我的心跳了一下");
+       	try{
+    		socket.sendUrgentData(0xFF);//判断连接是否正常
+    		netInputStream.read(readLen);
+    		}catch(Exception ex){
+    			return 0;
+    	}
+       	return 1;
+    }
+    
+    
 	public static void ListenerSocket(){
 		try {
 			ss = new ServerSocket(10000);
 			
 			while(true){//等待连接循环
 				System.out.println("服务器等待连接中"); 
-				Socket socket = ss.accept();
+				final Socket socket = ss.accept();
 				System.out.println("服务器已经连接客户端");
 	            netInputStream=new DataInputStream(socket.getInputStream());  
 	            netOutputStream=new DataOutputStream(socket.getOutputStream());
+	            System.out.println("对客户端说你好");
 	            sayHelloClient("Hello Client!");
+	    		Thread t = new Thread(new Runnable(){//创建一个线程
+	    			@Override
+	    			public void run() {
+	    				// TODO Auto-generated method stub
+	    				while(true){
+	    					try {
+								Thread.sleep(1000);
+			    				if(heartJump(socket) == 0){
+			    					System.out.println("发现客户端断开心跳跳出");
+			    					break;
+			    				};
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+	    				}
+	    				try {
+	    					System.out.println("心跳尝试关闭socket");
+							socket.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							System.out.println("心跳中关闭socket失败可能已经被关闭");
+						}
+
+	    			}  
+	    			});  
+	            
 	            while(true){//读取发送循环
+	            	
+		            t.start();
 
 	                System.out.println("读取数据");
 	               	try{
@@ -74,19 +116,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 	                System.out.println(theString);
 	                if(theString.equalsIgnoreCase("exit")){//获取到信息后如果是exit就断开连接
 	                	System.out.println("服务接收到exit");
-	                	String byebye = "byebye";//断开后说拜拜
-	                	char[] theChar = byebye.toCharArray();
-	                	byte[] portNameListNum = new byte[theChar.length];
-	                	for(int i=0;i<theChar.length;i++){
-	                		portNameListNum[i] = (byte) theChar[i];
-	                	}
-	                	try{
-	                		//socket.sendUrgentData(0xFF);
-	                		netOutputStream.write(portNameListNum);
-	                		}catch(Exception ex){
-	                			System.out.println("对方已经断开");
-	                	}
-	                	
+	                	sayHelloClient("byebye");
 	                	break;
 	                }
 
