@@ -82,21 +82,30 @@ public class ServerSocketListenerThread{/* extends Thread */
 			
 			while(true){//等待连接循环
 				System.out.println("服务器等待连接中"); 
+				
 				final Socket socket = ss.accept();
+				
 				System.out.println("服务器已经连接客户端");
+				
 	            netInputStream=new DataInputStream(socket.getInputStream());  
+	            
 	            netOutputStream=new DataOutputStream(socket.getOutputStream());
+	            
 	            System.out.println("对客户端说你好");
+	            
 	            sayHelloClient("Hello Client!");
+	            
 	    		Thread t = createHeartJumpThread(socket);//创建一个心跳
+	    		
+	    		 t.start();
 	            
 	            while(true){//读取发送循环
 	            	
-		            t.start();
+		           
 
 	                System.out.println("读取数据");
 	               	try{
-	            		socket.sendUrgentData(0xFF);//判断连接是否正常
+	            		//socket.sendUrgentData(0xFF);//判断连接是否正常
 	            		netInputStream.read(readLen);
 	            		}catch(Exception ex){
 	            			System.out.println("对方已经断开停止读取数据");
