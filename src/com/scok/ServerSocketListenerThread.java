@@ -38,7 +38,7 @@ public class ServerSocketListenerThread{/* extends Thread */
     	System.out.println("我的心跳了一下");
        	try{
     		socket.sendUrgentData(0xFF);//判断连接是否正常
-    		netInputStream.read(readLen);
+    		sayHelloClient("Heart Jump!!!");
     		}catch(Exception ex){
     			return 0;
     	}
@@ -64,7 +64,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 	    				// TODO Auto-generated method stub
 	    				while(true){
 	    					try {
-								Thread.sleep(1000);
+								Thread.sleep(10000);
 			    				if(heartJump(socket) == 0){
 			    					System.out.println("发现客户端断开心跳跳出");
 			    					break;
