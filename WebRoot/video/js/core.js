@@ -111,9 +111,9 @@ function sendoffer(thews,thePC,target){
 function startWebSocket() {
     console.log("连接WebSocket");
     if ('WebSocket' in window)
-        ws = new WebSocket("wss://"+window.location.host+"/myRTC/webSocket");
+        ws = new WebSocket("wss://"+window.location.host+"/myRTCandsocket/webSocket");
     else if ('MozWebSocket' in window)
-        ws = new MozWebSocket("wss://"+window.location.host+"/myRTC/webSocket");
+        ws = new MozWebSocket("wss://"+window.location.host+"/myRTCandsocket/webSocket");
     else
         alert("not support");
 

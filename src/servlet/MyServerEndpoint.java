@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 
 
-import javax.websocket.CloseReason;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;

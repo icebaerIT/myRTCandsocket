@@ -1,0 +1,29 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#clearLIVE{
+	position: fixed;
+	bottom:0px;
+	right:0px;
+	height:30px;
+	width:200px;
+	color:#fff;
+	background-color:#3388ff;
+	border: 0px solid;
+}
+
+#clearLIVE:ACTIVE {
+	background-color:#317ef3;
+}
+#clearLIVE:HOVER {
+	background-color:#317ef3;
+}
+
+#the_back_ground{
+	position: fixed;
+	height: 100%;
+	width:100%;
+	background-color: #000;
+}
