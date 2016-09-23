@@ -42,8 +42,6 @@ public class ServerSocketListenerThread{/* extends Thread */
     	
     	System.out.println("创建了新的socket初始化参数");
     	sendLIVE("创建了新的socket初始化参数");
-    	
-    	
         theString="";
         
         theASCII = "";
@@ -116,6 +114,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 				int ring = 0;
 				while(true){
 					try {
+
 						Thread.sleep(10);
 						ring += 1;
 						int die = 1;
@@ -127,6 +126,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 	    				if(die == 0 || overtime >= 4 || connectOpen == 0){//心跳停止,时间超时,连接断开就停止心跳
 	    					System.out.println("心跳停止原因 heartJump(0停止):" + die + ",overtime(大于等于4停止):" + overtime + ",connectOpen(等于0时停止):" + connectOpen);
 	    					sendLIVE("心跳停止原因 heartJump(0停止):" + die + ",overtime(大于等于4停止):" + overtime + ",connectOpen(等于0时停止):" + connectOpen);
+
 	    					
 	    					break;
 	    				};
@@ -137,6 +137,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 				}
 				if(connectOpen == 1){
 					System.out.println("心跳尝试关闭socket");
+
 					sendLIVE("心跳尝试关闭socket");
 					
 			            shutdownAll(socket);//关闭所有连接
@@ -145,6 +146,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 		            connectOpen = 0;
 		            System.out.println("心跳关闭操作完成");
 		            sendLIVE("心跳关闭操作完成");
+
 				}
 		            
 			}  
@@ -170,6 +172,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 				
 				System.out.println("服务器已经连接客户端");
 				sendLIVE("服务器已经连接客户端");
+
 
 	            
 	            System.out.println("对客户端说你好");
@@ -252,6 +255,7 @@ public class ServerSocketListenerThread{/* extends Thread */
 		            shutdownAll(socket);//关闭所有连接
 		            System.out.println("服务器主动断开");
 		            sendLIVE("服务器主动断开");
+
 		            connectOpen = 0;
 	            }
                 
