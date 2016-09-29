@@ -65,7 +65,7 @@ public class Client
     public static void main(String[] args)  
     {  
     	Client client=new Client();  
-        //client.query("123.57.207.4",10000); 
-    	client.query("127.0.0.1",10000); 
+        client.query("123.57.207.4",10000); 
+    	//client.query("127.0.0.1",10000); 
     }  
 }  

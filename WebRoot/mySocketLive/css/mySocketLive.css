@@ -2,9 +2,13 @@
     margin: 0;
     padding: 0;
 }
+#LIVE{
+	color:#fff;
+}
 
 #clearLIVE{
 	position: fixed;
+	z-index:11;
 	bottom:0px;
 	right:0px;
 	height:30px;
@@ -23,6 +27,7 @@
 
 #the_back_ground{
 	position: fixed;
+	z-index:-99;
 	height: 100%;
 	width:100%;
 	background-color: #000;

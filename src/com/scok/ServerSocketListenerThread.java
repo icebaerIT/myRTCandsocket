@@ -7,6 +7,8 @@ import java.io.IOException;
 //import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import servlet.mySocketLive;
 
@@ -164,14 +166,19 @@ public class ServerSocketListenerThread{/* extends Thread */
 				
 				final Socket socket = ss.accept();
 				
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+				
+				System.out.println(df.format(new Date()));// new Date()为获取当前系统时间
+
+				
 	            netInputStream=new DataInputStream(socket.getInputStream());  
 	            
 	            netOutputStream=new DataOutputStream(socket.getOutputStream());
 	            
 				init();//初始化参数
 				
-				System.out.println("服务器已经连接客户端");
-				sendLIVE("服务器已经连接客户端");
+				System.out.println("服务器已经连接客户端日期:" + df.format(new Date()));
+				sendLIVE("服务器已经连接客户端:" + df.format(new Date()));
 
 
 	            
@@ -258,8 +265,16 @@ public class ServerSocketListenerThread{/* extends Thread */
 
 		            connectOpen = 0;
 	            }
-                
+	            
+	            
+				SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+				System.out.println("服务器断开客户端日期:" + f.format(new Date()));
+				sendLIVE("服务器断开客户端日期:" + f.format(new Date())); 
 			}
+			
+			
+
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
